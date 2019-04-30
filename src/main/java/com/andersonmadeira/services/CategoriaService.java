@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.andersonmadeira.domain.Categoria;
 import com.andersonmadeira.repositories.CategoriaRepository;
+import com.andersonmadeira.services.exceptions.ObjectNotFoundException;
 
 @Service
 public class CategoriaService {
@@ -16,7 +17,8 @@ public class CategoriaService {
 	
 	public Categoria buscar(Integer id) {
 		Optional<Categoria> cat = repo.findById(id);
-		return cat.orElse(null);
+		return cat.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado! Id = " + id
+				+ ", Tipo: " + Categoria.class.getName()));
 	}
 
 }
