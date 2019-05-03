@@ -13,6 +13,7 @@ import com.andersonmadeira.domain.Cidade;
 import com.andersonmadeira.domain.Cliente;
 import com.andersonmadeira.domain.Endereco;
 import com.andersonmadeira.domain.Estado;
+import com.andersonmadeira.domain.ItemPedido;
 import com.andersonmadeira.domain.Pagamento;
 import com.andersonmadeira.domain.PagamentoComBoleto;
 import com.andersonmadeira.domain.PagamentoComCartao;
@@ -25,6 +26,7 @@ import com.andersonmadeira.repositories.CidadeRepository;
 import com.andersonmadeira.repositories.ClienteRepository;
 import com.andersonmadeira.repositories.EnderecoRepository;
 import com.andersonmadeira.repositories.EstadoRepository;
+import com.andersonmadeira.repositories.ItemPedidoRepository;
 import com.andersonmadeira.repositories.PagamentoRepository;
 import com.andersonmadeira.repositories.PedidoRepository;
 import com.andersonmadeira.repositories.ProdutoRepository;
@@ -55,6 +57,9 @@ public class LojaSpringApplication implements CommandLineRunner {
 	
 	@Autowired
 	private PagamentoRepository pagRepo;
+	
+	@Autowired
+	private ItemPedidoRepository ipRepo;
 
 	public static void main(String[] args) {
 		SpringApplication.run(LojaSpringApplication.class, args);
@@ -119,6 +124,19 @@ public class LojaSpringApplication implements CommandLineRunner {
 		
 		pedRepo.saveAll(Arrays.asList(ped1, ped2));
 		pagRepo.saveAll(Arrays.asList(pagto1, pagto2));
+		
+		ItemPedido ip1 = new ItemPedido(ped1, p1, 0.00, 1, 2000.00);
+		ItemPedido ip2 = new ItemPedido(ped1, p3, 0.00, 2, 80.00);
+		ItemPedido ip3 = new ItemPedido(ped2, p2, 100.00, 1, 800.00);
+		
+		ped1.getItens().addAll(Arrays.asList(ip1, ip2));
+		ped2.getItens().addAll(Arrays.asList(ip3));
+		
+		p1.getItens().addAll(Arrays.asList(ip1));
+		p2.getItens().addAll(Arrays.asList(ip3));
+		p3.getItens().addAll(Arrays.asList(ip2));
+		
+		ipRepo.saveAll(Arrays.asList(ip1, ip2, ip3));
 		
 	}
 
